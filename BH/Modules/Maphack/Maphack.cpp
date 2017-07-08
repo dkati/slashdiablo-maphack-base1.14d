@@ -24,6 +24,7 @@ Maphack::Maphack() : Module("Maphack") {
 
 void Maphack::ReadConfig() {
 	revealType = (MaphackReveal)BH::config->ReadInt("RevealMode", 0);
+	showMapErrors = (MaphackReveal)BH::config->ReadInt("ShowMapErrors", 0);
 
 	Config automap(BH::config->ReadAssoc("Missile Color"));
 	automapColors["Player Missile"] = automap.ReadInt("Player", 0x97);
@@ -286,7 +287,9 @@ void Maphack::OnAutomapDraw() {
 						}
 					}
 				} else {
-					PrintText(1, "Unknown item code on map: %c%c%c\n", uInfo.itemCode[0], uInfo.itemCode[1], uInfo.itemCode[2]);
+					if (showMapErrors) {
+						PrintText(1, "Unknown item code on map: %c%c%c\n", uInfo.itemCode[0], uInfo.itemCode[1], uInfo.itemCode[2]);
+					}
 				}
 			}
 		}
